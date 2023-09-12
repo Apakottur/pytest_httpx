@@ -1,0 +1,11 @@
+[
+    {
+        "url": "https://test_url?a=%E6%95%B0%E6%8D%AE",
+        "method": "POST",
+        "match_headers": {"X-request": "abc"},
+        "match_content": "eyfmlbDmja4nOiAncmVxdWVzdCd9",
+        "status_code": 500,
+        "headers": {"set-cookie":  "key=value", "X-response": "def"},
+        "content": "eyfmlbDmja4nOiAncmVzcG9uc2UnfQ=="
+    }
+]

@@ -1600,3 +1600,18 @@ def test_mutating_json(httpx_mock: HTTPXMock) -> None:
 
         response = client.get("https://test_url")
         assert response.json() == {"content": "request 2"}
+
+
+def test_responses_from_file(httpx_mock: HTTPXMock) -> None:
+    httpx_mock.add_responses("data/valid_responses.json")
+
+    with httpx.Client() as client:
+        response = client.post(
+            "https://test_url?a=数据",
+            headers={"X-request": "abc"},
+            json={"数据": "request"},
+        )
+        assert response.status_code == 500
+        assert response.headers["X-response"] == "def"
+        assert response.json() == {"数据": "response"}
+        assert dict(response.cookies) == {"key": "value"}

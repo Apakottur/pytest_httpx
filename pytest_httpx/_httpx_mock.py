@@ -6,7 +6,7 @@ from typing import List, Union, Optional, Callable, Tuple, Pattern, Any, Dict, A
 
 import httpx
 
-from pytest_httpx import _httpx_internals
+from pytest_httpx import _httpx_internals, _file_handling
 
 
 class _RequestMatcher:
@@ -121,6 +121,16 @@ class HTTPXMock:
                 ],
             ]
         ] = []
+
+    def add_responses(self, file_path) -> None:
+        for response in _file_handling.read_file(file_path):
+            if "content" in response:
+                response["content"] = _file_handling.decode_content(response["content"])
+            if "match_content" in response:
+                response["match_content"] = _file_handling.decode_content(
+                    response["match_content"]
+                )
+            self.add_response(**response)
 
     def add_response(
         self,
